@@ -29,7 +29,101 @@ Create a HTML file to implement form based input and output.
 Publish the website in the given URL.
 
 # PROGRAM :
-# SERVER SIDE PROCESSING:
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Power Calculator</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center; /* horizontal center */
+      align-items: center;     /* vertical center */
+      font-family: Arial, sans-serif;
+      background-color: #e758f7;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+      border-radius: 12px;
+      background-color: #ffffffaa;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    input {
+      padding: 6px;
+      margin: 6px 0;
+      width: 120px;
+    }
+    button {
+      padding: 8px 16px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Power Calculator (P = I² × R)</h1>
+
+    <div>
+      <label>Current (I in A): </label>
+      <input type="number" id="current" step="any"><br>
+
+      <label>Resistance (R in Ω): </label>
+      <input type="number" id="resistance" step="any"><br>
+
+      <button onclick="calculatePower()">Calculate</button>
+    </div>
+
+    <h2 id="result">Power will appear here</h2>
+  </div>
+
+  <script>
+    function calculatePower() {
+      let I = parseFloat(document.getElementById("current").value);
+      let R = parseFloat(document.getElementById("resistance").value);
+
+      if (!isNaN(I) && !isNaN(R)) {
+        let P = I * I * R;
+        document.getElementById("result").innerText = "Power = " + P + " Watts";
+      } else {
+        document.getElementById("result").innerText = "Please enter both values!";
+      }
+    }
+  </script>
+
+</body>
+</html>
+
+views.py
+from django.shortcuts import render 
+def calculate_power(request):
+
+    if request.method == "POST":
+        Intensity = float(request.POST.get("Intensity"))
+        Resistance = float(request.POST.get("Resistance"))
+        Power = ((Intensity)**2 ) * Resistance 
+        print(f"Intensity: {Intensity} I, Resistance: {Resistance} R, Power: {Power}")
+    return render(request,'powerapp/power.html')
+
+urls.py
+from django.contrib import admin
+from django.urls import path
+from powerapp import views
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', views.calculate_power, name='calculate_power'),
+]
+
+```
 # HOMEPAGE:
+
+![alt text](<Screenshot 2025-10-02 170213.png>)
 # RESULT:
 The program for performing server side processing is completed successfully.
